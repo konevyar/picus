@@ -10,7 +10,9 @@ from .models import Profile, Post
 def index(request):
     user_object = User.objects.get(username=request.user.username)
     user_profile= Profile.objects.get(user=user_object)
-    return render(request, 'index.html', {'user_profile': user_profile})
+
+    posts = Post.objects.all()
+    return render(request, 'index.html', {'user_profile': user_profile, 'posts': posts})
 
 
 def signup(request):
@@ -20,7 +22,7 @@ def signup(request):
         password = request.POST['password']
         password2 = request.POST['password2']
 
-        if password == password2:
+        if password == password2:  # checking if user enter valid password twice
             if User.objects.filter(email=email).exists():  # checking if user email already taken
                 messages.info(request, 'Email Taken.')
                 return redirect('signup')
@@ -40,7 +42,7 @@ def signup(request):
                 new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
                 new_profile.save()
                 return redirect('signup')
-        else:
+        else:  # user enter invalid password
             messages.info(request, 'Password Not Matching.')
             return redirect('signup')
 
