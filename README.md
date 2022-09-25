@@ -1,5 +1,5 @@
 # Picus
-Social media app.
+Social media app, written in Python, based on Django.
 
 ## Picus ##
 ### Description: ###
@@ -23,7 +23,7 @@ Picus is built using Django framework and open source page templates tailored to
     source venv/Scripts/activate
 
 ###### on Mac/Linux
-    source env/bin/activate
+    source venv/bin/activate
 
 ### 4. Install dependencies from the requirements.txt file: ###
     pip install -r requirements.txt
