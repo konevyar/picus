@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{% static 'favicon.png' %}" rel="icon" type="image/png">
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon" type="image/png">
     <title>Home</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -68,13 +68,12 @@
                                     <form action="upload" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <p class="my-3 leading-6"> Upload pics </p>
-                                    <div>
-                                        <input type="file" name="image_upload">
-<!--                                        <a href="#" class="button soft-warning small"> Choose file</a>-->
-                                        <textarea class="button soft-warning small" name="caption" placeholder="caption"></textarea>
-                                        <br>
-                                        <button class="button bg-blue-700" type="submit"> Upload </button>
-                                    </div>
+                                        <div>
+                                            <input type="file" name="image_upload">
+                                            <textarea class="button soft-warning small" name="caption" placeholder="caption"></textarea>
+                                            <br>
+                                            <button class="button bg-blue-700" type="submit"> Upload </button>
+                                        </div>
                                     </form>
 
                                 </div>
@@ -100,9 +99,6 @@
     
                             </div>
 
-                            <div class="px-4 py-3 -mx-5 -mb-4 mt-5 border-t text-sm">
-                                Your Video size Must be Maxmium 999MB
-                            </div>
                         </div>
 
                         <!-- profile -->
@@ -113,12 +109,9 @@
                         <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
                             <ul>
                                 <li><a href="/settings"> Account setting </a> </li>
-                                <li><a href="explore.html">explore </a> </li>
-                                <li><a href="#"> Help </a> </li>
                                 <li><a href="logout"> Log Out</a></li>
                             </ul>
                         </div>
-
                     </div>
                 </div>
             </header>
