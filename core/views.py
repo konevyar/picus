@@ -37,6 +37,7 @@ def index(request):
 
     #  Common suggestion list
     new_suggestions_list = [x for x in list(all_users) if (x not in list(user_following_all))]
+
     #  Current user suggestion list
     current_user = User.objects.filter(username=request.user.username)
     final_suggestions_list = [x for x in list(new_suggestions_list) if (x not in list(current_user))]
@@ -93,7 +94,6 @@ def signup(request):
 
 
 def signin(request):
-
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -163,8 +163,6 @@ def upload(request):
     else:
         return redirect('/')
 
-    return HttpResponse('<h1>Upload View</h1>')
-
 
 @login_required(login_url='signin')
 def like_post(request):
@@ -205,7 +203,7 @@ def profile(request, pk):
 
     #  Number of followers
     user_followers = len(FollowersCount.objects.filter(user=pk))
-    #  Number of users user is following
+    #  Number of users current user is following
     user_following = len(FollowersCount.objects.filter(follower=pk))
 
     context = {
@@ -217,6 +215,7 @@ def profile(request, pk):
         'user_followers': user_followers,
         'user_following': user_following,
     }
+
     return render(request, 'profile.html', context)
 
 

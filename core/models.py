@@ -20,6 +20,7 @@ class Profile(models.Model):
 
 
 class Post(models.Model):
+    """User post. Include: id, username, image, caption, date, number of likes."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4())
     user = models.CharField(max_length=100)
     image = models.ImageField(upload_to='post_images')
