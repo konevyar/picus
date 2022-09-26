@@ -3,9 +3,9 @@ Social media app, written in Python, based on Django.
 
 ## Picus ##
 ### Description: ###
-Picus is an Instagram-like social network that allows users to post pictures accompanied by text, subscribe to other users, get likes and see recommendations. Only authorized users can read posts.
+Picus is an Instagram-like social network that allows users to post pictures accompanied by text, subscribe to other users, get likes and see recommendations. Each user can have a userpic and a bio. Only authorized users can read posts.
 
-Picus is built using Django framework and open source page templates tailored to the needs of the application.
+Picus is built using Django framework and open source page templates, tailored to the needs of the application.
 
 ## Project start: ##
 
