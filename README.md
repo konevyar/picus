@@ -1,35 +1,84 @@
 # Picus
-Social media app, written in Python, based on Django.
 
-## Picus ##
-### Description: ###
-Picus is an Instagram-like social network that allows users to post pictures accompanied by text, subscribe to other users, get likes and see recommendations. Each user can have a userpic and a bio. Only authorized users can read posts.
+Picus - социальная сеть, гибрид Instagram и бывшего Twitter, создана на базе фреймворка [Django](https://www.djangoproject.com/).
 
-Picus is built using Django framework and open source page templates, tailored to the needs of the application.
+## Оглавление
+- [Введение](#Введение)
+- [Особенности](#Особенности)
+- [Установка](#installation)
+- [Использование](#Использование)
 
-## Project start: ##
+## Введение
+Picus - веб-приложение, социальная сеть, позволяющая пользователям регистрировать аккаунты, размещать посты, включающие текст и графические изображения, подписываться на других пользователей, таким образом формируя собственную ленту, а также ставить лайки постам и оставлять комментарии под ними.
 
-### 1. Clone the repository: ###
+## Особенности
+Реализованные функции:
+- Аутентификация пользователей и управление профилями, личный аккаунт пользователя;
+- Размещение постов, содержащих текст и/или графические изображения;
+- Лайки под постами;
+- Подписка на других пользователей с возможностью видеть их размещенные посты;
+- Лента, состоящая из постов пользователей, на которых осуществлена подписка.
 
-    git clone https://github.com/konevyar/Picus.git
+## Установка
+Для локального запуска Picus необходимы:
+- Python 3.x
+- менеджер пакетов pip
 
-### 2. Go to project directory: ###
-    cd Picus
+Для установки Picus выполните следующие шаги:
 
-### 3. Create and activate a virtual environment: ###
-    python3 -m venv venv
+1. Клонируйте репозиторий:
+```
+git clone https://github.com/konevyar/picus.git
+```
 
-###### on Windows
-    source venv/Scripts/activate
+2. Перейдите в каталог проекта:
+```
+cd picus
+```
 
-###### on Mac/Linux
-    source venv/bin/activate
+3. Создайте виртуальную среду:
+```
+python -m venv .venv
+```
 
-### 4. Install dependencies from the requirements.txt file: ###
-    pip install -r requirements.txt
-  
-### Make migration: ###
-    python3 manage.py migrate
+4. Активируйте виртуальную среду:
+```
+source .venv/bin/activate
+```
 
-### Start project: ###
-    python3 manage.py runserver
+5. Установите необходимые зависимости:
+```
+pip install -r requirements.txt
+```
+
+6. Сгенерируйте секретный ключ Django:
+```
+python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+
+7. Создайте в корневой директории проекта файл .env со следующим содержимым:
+```
+SECRET_KEY=вставьте ваш секретный ключ
+DEBUG=True
+```
+
+8. Настройте базу данных:
+```
+python manage.py makemigrations
+```
+
+```
+python manage.py migrate
+```
+   
+9. Запустите сервер разработки:
+```
+python manage.py runserver
+```
+
+10. Получите доступ к Picus в веб-браузере по адресу `http://localhost:8000`.
+
+## Использование
+После доступа к Picus перед вами откроется с предложением войти в аккаунт или создать его. После логина или создания аккаунта вы попадете в личный аккаунт пользователя.
+
+Зарегистрированные пользователи могут создавать посты, подписываться на других пользователей и отписываться от них, ставить лайки.
