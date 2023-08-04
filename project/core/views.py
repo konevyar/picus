@@ -1,22 +1,25 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User, auth
+import random
+from itertools import chain
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from .models import Profile, Post, LikePost, FollowersCount
-from itertools import chain
-import random
+from django.contrib.auth.models import User, auth
+from django.shortcuts import redirect, render
+
+from .models import FollowersCount, LikePost, Post, Profile
 
 
 @login_required(login_url='signin')
 def index(request):
     user_object = User.objects.get(username=request.user.username)
-    user_profile= Profile.objects.get(user=user_object)
+    user_profile = Profile.objects.get(user=user_object)
 
     #  User feed
     user_following_list = []
     feed = []
-    user_following = FollowersCount.objects.filter(follower=request.user.username)
+    user_following = FollowersCount.objects.filter(
+        follower=request.user.username
+    )
 
     for users in user_following:
         user_following_list.append(users.user)
@@ -36,11 +39,15 @@ def index(request):
         user_following_all.append(user_list)
 
     #  Common suggestion list
-    new_suggestions_list = [x for x in list(all_users) if (x not in list(user_following_all))]
+    new_suggestions_list = [
+        x for x in list(all_users) if (x not in list(user_following_all))
+    ]
 
     #  Current user suggestion list
     current_user = User.objects.filter(username=request.user.username)
-    final_suggestions_list = [x for x in list(new_suggestions_list) if (x not in list(current_user))]
+    final_suggestions_list = [
+        x for x in list(new_suggestions_list) if (x not in list(current_user))
+    ]
     random.shuffle(final_suggestions_list)
 
     username_profile = []
@@ -55,34 +62,52 @@ def index(request):
 
     suggestions_username_profile_list = list(chain(*username_profile_list))
 
-    return render(request, 'index.html', {'user_profile': user_profile, 'posts': feed_list, 'suggestions_username_profile_list': suggestions_username_profile_list[:4]})
+    return render(request, 'index.html', {
+        'user_profile': user_profile,
+        'posts': feed_list,
+        'suggestions_username_profile_list': suggestions_username_profile_list[:4]
+        }
+    )
 
 
 def signup(request):
-    if request.method == 'POST':  # checking data, if it's incorrect - return to signup page
+    # checking data, if it's incorrect - return to signup page
+    if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
         password2 = request.POST['password2']
 
-        if password == password2:  # checking if user enter valid password twice
-            if User.objects.filter(email=email).exists():  # checking if user email already taken
+        # Checking if user enter valid password twice
+        if password == password2:
+            # Checking if user email already taken
+            if User.objects.filter(email=email).exists():
                 messages.info(request, 'Email Taken.')
                 return redirect('signup')
-            elif User.objects.filter(username=username).exists():  # checking if username already taken
+            # Checking if username already taken
+            elif User.objects.filter(username=username).exists():
                 messages.info(request, 'Username Taken.')
                 return redirect('signup')
             else:  # if userinfo is valid, create user
-                user = User.objects.create_user(username=username, email=email, password=password,)
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password=password,
+                )
                 user.save()
 
                 # Log user in and redirect to settings page
-                user_login = auth.authenticate(username=username, password=password)
+                user_login = auth.authenticate(
+                    username=username,
+                    password=password
+                )
                 auth.login(request, user_login)
 
                 # create a Profile object for the new user
                 user_model = User.objects.get(username=username)
-                new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
+                new_profile = Profile.objects.create(
+                    user=user_model, id_user=user_model.id
+                )
                 new_profile.save()
                 return redirect('settings')
         else:  # user enter invalid password
@@ -170,7 +195,10 @@ def like_post(request):
     post_id = request.GET.get('post_id')
     post = Post.objects.get(id=post_id)
 
-    like_filter = LikePost.objects.filter(post_id=post_id, username=username).first()
+    like_filter = LikePost.objects.filter(
+        post_id=post_id,
+        username=username
+    ).first()
 
     if like_filter == None:  # check if user didn't like post before
         new_like = LikePost.objects.create(post_id=post_id, username=username)
@@ -227,12 +255,17 @@ def follow(request):
 
         #  User unfollow another user
         if FollowersCount.objects.filter(follower=follower, user=user).first():
-            delete_follower = FollowersCount.objects.get(follower=follower, user=user)
+            delete_follower = FollowersCount.objects.get(
+                follower=follower, user=user
+            )
             delete_follower.delete()
             return redirect('/profile/'+user)
         #  User follow another user
         else:
-            new_follower = FollowersCount.objects.create(follower=follower, user=user)
+            new_follower = FollowersCount.objects.create(
+                follower=follower,
+                user=user
+            )
             new_follower.save()
             return redirect('/profile/'+user)
 
@@ -247,7 +280,8 @@ def search(request):
 
     if request.method == 'POST':
         username = request.POST['username']
-        username_object = User.objects.filter(username__icontains=username)  # Searching username from user request
+        # Searching username from user request
+        username_object = User.objects.filter(username__icontains=username)
 
         username_profile = []
         username_profile_list = []
@@ -261,4 +295,8 @@ def search(request):
 
         username_profile_list = list(chain(*username_profile_list))
 
-    return render(request, 'search.html', {'user_profile': user_profile, 'username_profile_list': username_profile_list})
+    return render(request, 'search.html', {
+        'user_profile': user_profile,
+        'username_profile_list': username_profile_list
+        }
+    )
